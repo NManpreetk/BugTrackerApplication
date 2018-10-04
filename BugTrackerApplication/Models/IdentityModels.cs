@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System.Collections.Generic;
+using System.Data.Entity;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
@@ -12,6 +13,12 @@ namespace BugTrackerApplication.Models
         public string FirstName { get; set; }
         public string LastName { get; set; }
 
+        public ApplicationUser()
+        {
+            BugTrackers = new HashSet<Project>();
+        }
+
+        public virtual ICollection<Project> BugTrackers { get; set; }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {
@@ -34,6 +41,6 @@ namespace BugTrackerApplication.Models
             return new ApplicationDbContext();
         }
 
-        public System.Data.Entity.DbSet<BugTrackerApplication.Models.BugTracker> BugTrackers { get; set; }
+        public System.Data.Entity.DbSet<BugTrackerApplication.Models.Project> Projects { get; set; }
     }
 }
