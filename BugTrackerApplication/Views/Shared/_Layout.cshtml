@@ -71,7 +71,7 @@
                     </li>
                     @Html.Partial("_LoginPartial")
 
-                    <li>
+                    @*<li>
                         <a href="@Url.Action("About", "Home")" class="waves-effect">Users</a>
                     </li>
                     <li>
@@ -82,8 +82,35 @@
                     </li>
                     <li>
                         <a href="@Url.Action("Create", "BugTracker")" class="waves-effect">Create</a>
-                    </li>
-
+                    </li>*@
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <li class="active treeview">
+                            <a href="#">
+                                <i class="fa fa-dashboard"></i> <span>Admin</span>
+                                <span class="pull-right-container">
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </span>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li class="active"><a href="@Url.Action("Index", "ApplicationUsers")">Change Role</a></li>
+                            </ul>
+                        </li>
+                    }
+                    @if (User.IsInRole("Admin") || User.IsInRole("Project Manager"))
+                    {
+                        <li class="active treeview">
+                            <a href="#">
+                                <i class="fa fa-dashboard"></i> <span>Projects</span>
+                                <span class="pull-right-container">
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </span>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li class="active"><a href="@Url.Action("Index", "Projects")"> All Projects</a></li>
+                            </ul>
+                        </li>
+                    }
                 </ul>
                 
             </div>
