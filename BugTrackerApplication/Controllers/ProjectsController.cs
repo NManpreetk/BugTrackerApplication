@@ -4,7 +4,9 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Net.Mail;
 using System.Web;
+using System.Web.Configuration;
 using System.Web.Mvc;
 using BugTrackerApplication.Models;
 
@@ -17,6 +19,13 @@ namespace BugTrackerApplication.Controllers
         // GET: Projects
         public ActionResult Index()
         {
+            var emailService = new PersonalEmailService();
+            var mailMessage = new MailMessage(
+                WebConfigurationManager.AppSettings["username"],
+                WebConfigurationManager.AppSettings["emailto"]);
+            mailMessage.Body = "This is a test e-mail.";
+            mailMessage.Subject = "Test e-mail";
+            emailService.Send(mailMessage);
             return View(db.Projects.ToList());
         }
 
