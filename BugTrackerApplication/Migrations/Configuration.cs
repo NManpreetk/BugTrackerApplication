@@ -49,6 +49,10 @@ namespace BugTrackerApplication.Migrations
             }
 
             ApplicationUser adminUser = null;
+            ApplicationUser ProjectManagerUser = null;
+            ApplicationUser DeveloperUser = null;
+            ApplicationUser SubmitterUser = null;
+
             if (!context.Users.Any(p => p.UserName == "admin@myBugTracker.com"))
             {
                 adminUser = new ApplicationUser();
@@ -67,6 +71,66 @@ namespace BugTrackerApplication.Migrations
             if (!userManager.IsInRole(adminUser.Id, "Admin"))
             {
                 userManager.AddToRole(adminUser.Id, "Admin");
+            }
+
+            if (!context.Users.Any(p => p.UserName == "ProjectManager@myBugTracker.com"))
+            {
+                ProjectManagerUser = new ApplicationUser();
+                ProjectManagerUser.UserName = "ProjectManager@myBugTracker.com";
+                ProjectManagerUser.Email = "ProjectManager@myBugTracker.com";
+                ProjectManagerUser.FirstName = "ProjectManager";
+                ProjectManagerUser.LastName = "User";
+                userManager.Create(ProjectManagerUser, "Password-2");
+            }
+            else
+            {
+                ProjectManagerUser = context.Users.Where(p => p.UserName == "ProjectManager@myBugTracker.com")
+                    .FirstOrDefault();
+            }
+
+            if (!userManager.IsInRole(ProjectManagerUser.Id, "ProjectManager"))
+            {
+                userManager.AddToRole(ProjectManagerUser.Id, "ProjectManager");
+            }
+
+            if (!context.Users.Any(p => p.UserName == "Developer@myBugTracker.com"))
+            {
+                DeveloperUser = new ApplicationUser();
+                DeveloperUser.UserName = "Developer@myBugTracker.com";
+                DeveloperUser.Email = "Developer@myBugTracker.com";
+                DeveloperUser.FirstName = "Developer";
+                DeveloperUser.LastName = "User";
+                userManager.Create(DeveloperUser, "Password-3");
+            }
+            else
+            {
+                DeveloperUser = context.Users.Where(p => p.UserName == "Developer@myBugTracker.com")
+                    .FirstOrDefault();
+            }
+
+            if (!userManager.IsInRole(DeveloperUser.Id, "Developer"))
+            {
+                userManager.AddToRole(DeveloperUser.Id, "Developer");
+            }
+
+            if (!context.Users.Any(p => p.UserName == "Submitter@myBugTracker.com"))
+            {
+                SubmitterUser = new ApplicationUser();
+                SubmitterUser.UserName = "Submitter@myBugTracker.com";
+                SubmitterUser.Email = "Submitter@myBugTracker.com";
+                SubmitterUser.FirstName = "Submitter";
+                SubmitterUser.LastName = "User";
+                userManager.Create(SubmitterUser, "Password-4");
+            }
+            else
+            {
+                SubmitterUser = context.Users.Where(p => p.UserName == "Submitter@myBugTracker.com")
+                    .FirstOrDefault();
+            }
+
+            if (!userManager.IsInRole(SubmitterUser.Id, "Submitter"))
+            {
+                userManager.AddToRole(SubmitterUser.Id, "Submitter");
             }
         }
     }

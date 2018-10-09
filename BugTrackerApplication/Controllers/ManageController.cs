@@ -15,6 +15,7 @@ namespace BugTrackerApplication.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        private ApplicationDbContext db = new ApplicationDbContext();
 
         public ManageController()
         {
@@ -61,6 +62,7 @@ namespace BugTrackerApplication.Controllers
                 : message == ManageMessageId.Error ? "An error has occurred."
                 : message == ManageMessageId.AddPhoneSuccess ? "Your phone number was added."
                 : message == ManageMessageId.RemovePhoneSuccess ? "Your phone number was removed."
+                : message == ManageMessageId.ChangeNameSuccess ? "Your Name was changed."
                 : "";
 
             var userId = User.Identity.GetUserId();
@@ -333,7 +335,32 @@ namespace BugTrackerApplication.Controllers
             base.Dispose(disposing);
         }
 
-#region Helpers
+        public ActionResult ChangeName()
+        {
+            var userId = User.Identity.GetUserId();
+            var user = db.Users.FirstOrDefault(p => p.Id == userId);
+            var model = new ChangeNameViewModel();
+            model.NewName = user.Name;
+            return View(model);
+        }
+
+        // POST: Projects/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ChangeName(ChangeNameViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var userId = User.Identity.GetUserId();
+                var dbUser = db.Users.FirstOrDefault(p => p.Id == userId);
+                dbUser.Name = model.NewName;
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(model);
+        }
+
+        #region Helpers
         // Used for XSRF protection when adding external logins
         private const string XsrfKey = "XsrfId";
 
@@ -381,7 +408,8 @@ namespace BugTrackerApplication.Controllers
             SetPasswordSuccess,
             RemoveLoginSuccess,
             RemovePhoneSuccess,
-            Error
+            Error,
+            ChangeNameSuccess
         }
 
 #endregion

@@ -55,7 +55,7 @@
                         </form>
                     </li>
                     <li>
-                        <a class="profile-pic" href="#"> <img src="~/images/users/varun.jpg" alt="user-img" width="36" class="img-circle"><b class="hidden-xs">@User.Identity.Name</b></a>
+                        <a class="profile-pic" href="@Url.Action("Index", "Manage")"> <img src="~/images/users/varun.jpg" alt="user-img" width="36" class="img-circle"><b class="hidden-xs">@User.Identity.Name</b></a>
                     </li>
                 </ul>
             </div>
@@ -70,24 +70,26 @@
                         <a href="@Url.Action("Index", "Home")" class="waves-effect">Home</a>
                     </li>
                     @Html.Partial("_LoginPartial")
-
+                    <li>
+                        <a href="@Url.Action("Index", "ApplicationUsers")">Application Users</a>
+                    </li>
                     @*<li>
-                        <a href="@Url.Action("About", "Home")" class="waves-effect">Users</a>
-                    </li>
-                    <li>
-                        <a href="~/html/fontawesome.html" class="waves-effect">Icons</a>
-                    </li>
-                    <li>
-                        <a href="~/html/map-google.html" class="waves-effect">Google Map</a>
-                    </li>
-                    <li>
-                        <a href="@Url.Action("Create", "BugTracker")" class="waves-effect">Create</a>
-                    </li>*@
+            <a href="@Url.Action("About", "Home")" class="waves-effect">Users</a>
+        </li>
+        <li>
+            <a href="~/html/fontawesome.html" class="waves-effect">Icons</a>
+        </li>
+        <li>
+            <a href="~/html/map-google.html" class="waves-effect">Google Map</a>
+        </li>
+        <li>
+            <a href="@Url.Action("Create", "BugTracker")" class="waves-effect">Create</a>
+        </li>*@
                     @if (User.IsInRole("Admin"))
                     {
                         <li class="active treeview">
                             <a href="#">
-                                <i class="fa fa-dashboard"></i> <span>Admin</span>
+                                <span>Admin</span>
                                 <span class="pull-right-container">
                                     <i class="fa fa-angle-left pull-right"></i>
                                 </span>
@@ -101,7 +103,7 @@
                     {
                         <li class="active treeview">
                             <a href="#">
-                                <i class="fa fa-dashboard"></i> <span>Projects</span>
+                                <span>Projects</span>
                                 <span class="pull-right-container">
                                     <i class="fa fa-angle-left pull-right"></i>
                                 </span>
