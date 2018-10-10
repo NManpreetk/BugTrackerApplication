@@ -9,6 +9,8 @@ namespace BugTrackerApplication.Controllers
 {
     public class HomeController : Controller
     {
+        private ApplicationDbContext db = new ApplicationDbContext();
+
         public ActionResult Index()
         {
             var user = new ApplicationUser();
@@ -17,7 +19,7 @@ namespace BugTrackerApplication.Controllers
             user.CreatedTickets.ToList();
             user.AssignedTickets.ToList();
 
-            return View();
+            return View(db.Tickets.ToList());
         }
 
         public ActionResult About()

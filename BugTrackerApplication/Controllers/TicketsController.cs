@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using BugTrackerApplication.Models;
+using PagedList;
 
 namespace BugTrackerApplication.Controllers
 {
@@ -15,10 +16,13 @@ namespace BugTrackerApplication.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Tickets
-        public ActionResult Index()
+        public ActionResult Index(int? page)
         {
+            int pageSize = 1; // display three blog posts at a time on this page
+            int pageNumber = (page ?? 1);
+            var ticket = db.Tickets.OrderBy(p => p.Id).ToPagedList(pageNumber, pageSize);
             var tickets = db.Tickets.Include(t => t.Assignee).Include(t => t.Creator).Include(t => t.TicketPriority).Include(t => t.TicketStatus).Include(t => t.TicketType);
-            return View(tickets.ToList());
+            return View(ticket);
         }
 
         // GET: Tickets/Details/5

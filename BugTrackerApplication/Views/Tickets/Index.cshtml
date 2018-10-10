@@ -1,4 +1,6 @@
-﻿@model IEnumerable<BugTrackerApplication.Models.Ticket>
+﻿@using PagedList;
+@using PagedList.Mvc;
+@model IEnumerable<BugTrackerApplication.Models.Ticket>
 
 @{
     ViewBag.Title = "Index";
@@ -21,6 +23,9 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="white-box">
+                    @{
+                        var pagedList = (IPagedList)Model;
+                    }
                     <p>
                         @Html.ActionLink("Create New", "Create")
                     </p>
@@ -101,6 +106,8 @@
                         }
 
                     </table>
+                    Page @(pagedList.PageCount < pagedList.PageNumber ? 0 : pagedList.PageNumber) of @pagedList.PageCount
+                    @Html.PagedListPager(pagedList, page => Url.Action("Index", new { page }))
                 </div>
             </div>
         </div>
