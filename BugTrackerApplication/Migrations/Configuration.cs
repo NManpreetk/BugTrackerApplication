@@ -1,25 +1,38 @@
 namespace BugTrackerApplication.Migrations
 {
+    using BugTrackerApplication.Models;
+    using Microsoft.AspNet.Identity;
+    using Microsoft.AspNet.Identity.EntityFramework;
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
     using System.Linq;
-    using BugTrackerApplication.Models;
-    using Microsoft.AspNet.Identity;
-    using Microsoft.AspNet.Identity.EntityFramework;
 
     internal sealed class Configuration : DbMigrationsConfiguration<BugTrackerApplication.Models.ApplicationDbContext>
     {
         public Configuration()
         {
             AutomaticMigrationsEnabled = true;
-            ContextKey = "BugTrackerApplication.Models.ApplicationDbContext";
         }
 
-        protected override void Seed(Models.ApplicationDbContext context)
+        protected override void Seed(BugTrackerApplication.Models.ApplicationDbContext context)
         {
-            //  This method will be called after migrating to the latest version.
+            context.TicketPriorities.AddOrUpdate(x => x.Id,
+                new TicketPriority() { Title = "High" },
+                new TicketPriority() { Title = "Low" },
+                new TicketPriority() { Title = "Medium" });
 
+            context.TicketStatuses.AddOrUpdate(x => x.Id,
+                new TicketStatus() { Title = "Completed" },
+                new TicketStatus() { Title = "Not Completed" });
+
+            context.TicketTypes.AddOrUpdate(x => x.Id,
+                new TicketType() { Title = "Bug Fixes" },
+                new TicketType() { Title = "Software Update" },
+                new TicketType() { Title = "Adding Helpers" },
+                new TicketType() { Title = "Database Errors" });
+
+            //  This method will be called after migrating to the latest version.
             //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
             //  to avoid creating duplicate seed data.
             var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
@@ -88,9 +101,9 @@ namespace BugTrackerApplication.Migrations
                     .FirstOrDefault();
             }
 
-            if (!userManager.IsInRole(ProjectManagerUser.Id, "ProjectManager"))
+            if (!userManager.IsInRole(ProjectManagerUser.Id, "Project Manager"))
             {
-                userManager.AddToRole(ProjectManagerUser.Id, "ProjectManager");
+                userManager.AddToRole(ProjectManagerUser.Id, "Project Manager");
             }
 
             if (!context.Users.Any(p => p.UserName == "Developer@myBugTracker.com"))

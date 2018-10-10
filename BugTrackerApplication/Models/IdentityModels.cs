@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -15,9 +16,16 @@ namespace BugTrackerApplication.Models
         public ApplicationUser()
         {
             Projects = new HashSet<Project>();
+            CreatedTickets = new HashSet<Ticket>();
+            AssignedTickets = new HashSet<Ticket>();
         }
 
         public virtual ICollection<Project> Projects { get; set; }
+        [InverseProperty("Creator")]
+        public virtual ICollection<Ticket> CreatedTickets { get; set; }
+        [InverseProperty("Assignee")]
+        public virtual ICollection<Ticket> AssignedTickets { get; set; }
+
         public string FirstName { get; internal set; }
         public string LastName { get; internal set; }
 
@@ -42,8 +50,11 @@ namespace BugTrackerApplication.Models
             return new ApplicationDbContext();
         }
 
-        public System.Data.Entity.DbSet<BugTrackerApplication.Models.Project> Projects { get; set; }
+        public DbSet<Project> Projects { get; set; }
 
-
+        public DbSet<Ticket> Tickets { get; set; }
+        public DbSet<TicketStatus> TicketStatuses { get; set; }
+        public DbSet<TicketPriority> TicketPriorities { get; set; }
+        public DbSet<TicketType> TicketTypes { get; set; }
     }
 }

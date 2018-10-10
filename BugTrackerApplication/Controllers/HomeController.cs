@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BugTrackerApplication.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -10,6 +11,12 @@ namespace BugTrackerApplication.Controllers
     {
         public ActionResult Index()
         {
+            var user = new ApplicationUser();
+            var db = new ApplicationDbContext();
+
+            user.CreatedTickets.ToList();
+            user.AssignedTickets.ToList();
+
             return View();
         }
 
